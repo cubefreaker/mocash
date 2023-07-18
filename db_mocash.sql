@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS `tb_cart` (
   `user_email` varchar(191) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
   `total_produk` int NOT NULL DEFAULT '0',
   `total_harga` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `pembayaran` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sisa_pembayaran` decimal(10,2) NOT NULL DEFAULT '0.00',
   `waktu_buat` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `waktu_selesai` datetime DEFAULT NULL,
   `status` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'Pending',
@@ -36,11 +38,19 @@ CREATE TABLE IF NOT EXISTS `tb_cart` (
   KEY `tb_cart_user_email_fk` (`user_email`),
   CONSTRAINT `tb_cart_user_email_fk` FOREIGN KEY (`user_email`) REFERENCES `tb_user` (`email`) ON UPDATE CASCADE,
   CONSTRAINT `tb_cart_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_mocash.tb_cart: ~1 rows (approximately)
-INSERT INTO `tb_cart` (`id`, `user_id`, `user_email`, `total_produk`, `total_harga`, `waktu_buat`, `waktu_selesai`, `status`, `company`, `cabang`) VALUES
-	(2, 8, 'kasir1@mail.com', 18, 295500.00, '2023-07-18 09:52:12', NULL, 'Pending', NULL, NULL);
+-- Dumping data for table db_mocash.tb_cart: ~9 rows (approximately)
+INSERT INTO `tb_cart` (`id`, `user_id`, `user_email`, `total_produk`, `total_harga`, `pembayaran`, `sisa_pembayaran`, `waktu_buat`, `waktu_selesai`, `status`, `company`, `cabang`) VALUES
+	(9, 8, 'kasir1@mail.com', 4, 94500.00, 100000.00, 5500.00, '2023-07-18 18:11:45', '2023-07-18 17:40:21', 'Done', 'McDonald\'s', 'DMALL'),
+	(10, 8, 'kasir1@mail.com', 2, 94000.00, 0.00, 0.00, '2023-07-18 18:11:47', '2023-07-18 18:01:27', 'Cancel', 'McDonald\'s', 'DMALL'),
+	(11, 8, 'kasir1@mail.com', 2, 94000.00, 0.00, 0.00, '2023-07-18 18:11:47', '2023-07-18 18:01:39', 'Cancel', 'McDonald\'s', 'DMALL'),
+	(12, 8, 'kasir1@mail.com', 2, 94000.00, 0.00, 0.00, '2023-07-18 18:11:48', '2023-07-18 18:03:05', 'Cancel', 'McDonald\'s', 'DMALL'),
+	(13, 8, 'kasir1@mail.com', 2, 94000.00, 0.00, 0.00, '2023-07-18 18:11:48', '2023-07-18 18:04:06', 'Cancel', 'McDonald\'s', 'DMALL'),
+	(14, 8, 'kasir1@mail.com', 2, 82000.00, 100000.00, 18000.00, '2023-07-18 18:11:49', '2023-07-18 18:04:23', 'Done', 'McDonald\'s', 'DMALL'),
+	(15, 8, 'kasir1@mail.com', 7, 111000.00, 0.00, 0.00, '2023-07-18 21:08:09', '2023-07-18 21:08:09', 'Cancel', 'McDonald\'s', 'DMALL'),
+	(16, 8, 'kasir1@mail.com', 3, 85000.00, 100000.00, 15000.00, '2023-07-18 21:09:09', '2023-07-18 21:09:09', 'Done', 'McDonald\'s', 'DMALL'),
+	(17, 8, 'kasir1@mail.com', 1, 46000.00, 50000.00, 4000.00, '2023-07-18 21:09:55', '2023-07-18 21:09:55', 'Done', 'McDonald\'s', 'DMALL');
 
 -- Dumping structure for table db_mocash.tb_cart_detail
 CREATE TABLE IF NOT EXISTS `tb_cart_detail` (
@@ -57,13 +67,32 @@ CREATE TABLE IF NOT EXISTS `tb_cart_detail` (
   KEY `tb_cart_detail_id_cart_fk` (`id_cart`),
   CONSTRAINT `tb_cart_detail_id_cart_fk` FOREIGN KEY (`id_cart`) REFERENCES `tb_cart` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `tb_cart_detail_id_product_fk` FOREIGN KEY (`id_product`) REFERENCES `tb_product` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table db_mocash.tb_cart_detail: ~3 rows (approximately)
+-- Dumping data for table db_mocash.tb_cart_detail: ~22 rows (approximately)
 INSERT INTO `tb_cart_detail` (`id`, `id_product`, `id_cart`, `jumlah`, `harga`, `waktu`, `company`, `cabang`) VALUES
-	(1, 59, 2, 1, 46000.00, '2023-07-18 07:53:50', 'McDonald\'s', 'DMALL'),
-	(2, 28, 2, 16, 232000.00, '2023-07-18 09:52:12', 'McDonald\'s', 'DMALL'),
-	(3, 21, 2, 1, 17500.00, '2023-07-18 07:56:39', 'McDonald\'s', 'DMALL');
+	(34, 60, 9, 1, 48000.00, '2023-07-18 17:40:09', 'McDonald\'s', 'DMALL'),
+	(35, 21, 9, 1, 17500.00, '2023-07-18 17:40:12', 'McDonald\'s', 'DMALL'),
+	(36, 24, 9, 2, 29000.00, '2023-07-18 17:40:16', 'McDonald\'s', 'DMALL'),
+	(37, 59, 10, 1, 46000.00, '2023-07-18 18:01:15', 'McDonald\'s', 'DMALL'),
+	(38, 60, 10, 1, 48000.00, '2023-07-18 18:01:17', 'McDonald\'s', 'DMALL'),
+	(39, 59, 11, 1, 46000.00, '2023-07-18 18:01:33', 'McDonald\'s', 'DMALL'),
+	(40, 60, 11, 1, 48000.00, '2023-07-18 18:01:34', 'McDonald\'s', 'DMALL'),
+	(41, 59, 12, 1, 46000.00, '2023-07-18 18:01:44', 'McDonald\'s', 'DMALL'),
+	(42, 60, 12, 1, 48000.00, '2023-07-18 18:01:46', 'McDonald\'s', 'DMALL'),
+	(43, 59, 13, 1, 46000.00, '2023-07-18 18:04:02', 'McDonald\'s', 'DMALL'),
+	(44, 60, 13, 1, 48000.00, '2023-07-18 18:04:03', 'McDonald\'s', 'DMALL'),
+	(45, 67, 14, 1, 44000.00, '2023-07-18 18:04:15', 'McDonald\'s', 'DMALL'),
+	(46, 61, 14, 1, 38000.00, '2023-07-18 18:04:16', 'McDonald\'s', 'DMALL'),
+	(47, 21, 15, 2, 35000.00, '2023-07-18 18:04:31', 'McDonald\'s', 'DMALL'),
+	(48, 22, 15, 1, 23000.00, '2023-07-18 18:04:31', 'McDonald\'s', 'DMALL'),
+	(49, 30, 15, 1, 17000.00, '2023-07-18 18:04:34', 'McDonald\'s', 'DMALL'),
+	(50, 29, 15, 1, 17000.00, '2023-07-18 18:04:35', 'McDonald\'s', 'DMALL'),
+	(51, 33, 15, 1, 9500.00, '2023-07-18 18:04:36', 'McDonald\'s', 'DMALL'),
+	(52, 40, 15, 1, 9500.00, '2023-07-18 18:04:39', 'McDonald\'s', 'DMALL'),
+	(54, 21, 16, 2, 35000.00, '2023-07-18 21:08:27', 'McDonald\'s', 'DMALL'),
+	(55, 62, 16, 1, 50000.00, '2023-07-18 21:08:53', 'McDonald\'s', 'DMALL'),
+	(56, 59, 17, 1, 46000.00, '2023-07-18 21:09:49', 'McDonald\'s', 'DMALL');
 
 -- Dumping structure for table db_mocash.tb_product
 CREATE TABLE IF NOT EXISTS `tb_product` (
@@ -98,14 +127,14 @@ INSERT INTO `tb_product` (`id`, `kategori`, `nama`, `harga`, `stok`, `image`, `c
 	(18, 'Makanan', 'Rica Rica Chicken Rice', 22000.00, 10, 'RicaRicaChickenRice.png', 'McDonald\'s'),
 	(19, 'Makanan', 'Korean Soy Garlic Wings', 34500.00, 10, 'KoreanSoyGarlicWings.png', 'McDonald\'s'),
 	(20, 'Cemilan', 'Fish Snack Wrap', 17500.00, 10, 'FishSoyWrap.png', 'McDonald\'s'),
-	(21, 'Cemilan', 'Chicken Snack Wrap', 17500.00, 10, 'ChickenSnackWrap.png', 'McDonald\'s'),
+	(21, 'Cemilan', 'Chicken Snack Wrap', 17500.00, 7, 'ChickenSnackWrap.png', 'McDonald\'s'),
 	(22, 'Cemilan', 'Spicy Nori McShaker Fries', 23000.00, 10, 'SpicyNoriMcShakerFries.png', 'McDonald\'s'),
 	(23, 'Cemilan', 'Spicy Chicken Bites', 13000.00, 10, 'SpicyChickenBites.png', 'McDonald\'s'),
-	(24, 'Cemilan', 'Chicken Fingers 5pcs', 14500.00, 10, 'ChickenFingers.png', 'McDonald\'s'),
+	(24, 'Cemilan', 'Chicken Fingers 5pcs', 14500.00, 8, 'ChickenFingers.png', 'McDonald\'s'),
 	(25, 'Cemilan', 'French Freis', 19000.00, 10, 'FrenchFries.png', 'McDonald\'s'),
 	(26, 'Cemilan', 'Apple pie', 22500.00, 10, 'ApplePie.png', 'McDonald\'s'),
 	(27, 'Cemilan', 'Spicy McNuggets 6pcs', 40500.00, 10, 'SpicyChickenNuggets6pcs.png', 'McDonald\'s'),
-	(28, 'Minuman', 'Sakura Fizz', 14500.00, 6, 'SakuraFizz.png', 'McDonald\'s'),
+	(28, 'Minuman', 'Sakura Fizz', 14500.00, 10, 'SakuraFizz.png', 'McDonald\'s'),
 	(29, 'Minuman', 'Sprite X Manggo McFloat', 17000.00, 10, 'SpriteXManggoMcFloat.png', 'McDonald\'s'),
 	(30, 'Minuman', 'Coca Cola X Strawbeery McFloat', 17000.00, 10, 'CocaColaXStrawberryMcFloat.png', 'McDonald\'s'),
 	(31, 'Minuman', 'Iced Lychee Tea', 20000.00, 10, 'tv_led_32.jpg', 'McDonald\'s'),
@@ -136,15 +165,15 @@ INSERT INTO `tb_product` (`id`, `kategori`, `nama`, `harga`, `stok`, `image`, `c
 	(56, 'Dessert', 'McFlurry', 13500.00, 10, 'McFlurryOreo', 'McDonald\'s'),
 	(57, 'Dessert', 'Sundae Chocolate', 12000.00, 10, 'SundaeChocolate.png', 'McDonald\'s'),
 	(58, 'Dessert', 'Sundae Strawberry', 12000.00, 10, 'SundaeStrawberry.png', 'McDonald\'s'),
-	(59, 'Paket', 'PaNas Spesial', 46000.00, 10, 'PaNasSpesial.png', 'McDonald\'s'),
-	(60, 'Paket', 'PaNas Wings Large', 48000.00, 10, 'PaNasWingsLarg.png', 'McDonald\'s'),
-	(61, 'Paket', 'PaNas 1', 38000.00, 10, 'PaNas1.png', 'McDonald\'s'),
-	(62, 'Paket', 'PaNas 2 With Rice', 50000.00, 10, 'PaNas2WithRice.png', 'McDonald\'s'),
+	(59, 'Paket', 'PaNas Spesial', 46000.00, 6, 'PaNasSpesial.png', 'McDonald\'s'),
+	(60, 'Paket', 'PaNas Wings Large', 48000.00, 6, 'PaNasWingsLarg.png', 'McDonald\'s'),
+	(61, 'Paket', 'PaNas 1', 38000.00, 9, 'PaNas1.png', 'McDonald\'s'),
+	(62, 'Paket', 'PaNas 2 With Rice', 50000.00, 9, 'PaNas2WithRice.png', 'McDonald\'s'),
 	(63, 'Paket', 'PaNas 2 With Fries', 52000.00, 10, 'PaNas2WithFries.png', 'McDonald\'s'),
 	(64, 'Paket', 'PaMer 5', 125000.00, 10, 'PaMer5.png', 'McDonald\'s'),
 	(65, 'Paket', 'PaNas 7', 180000.00, 10, 'PaNas7.png', 'McDonald\'s'),
 	(66, 'Paket', 'PaNas Wings Koran Soy Garlic', 180000.00, 10, 'PaNasWingsKoranSoyGarlic.png', 'McDonald\'s'),
-	(67, 'Paket', 'Happy Meal Chicken Burger', 44000.00, 10, 'HappyMealChickenBurger.png', 'McDonald\'s'),
+	(67, 'Paket', 'Happy Meal Chicken Burger', 44000.00, 9, 'HappyMealChickenBurger.png', 'McDonald\'s'),
 	(68, 'Paket', 'Happy Meal McNuggets 4pcs', 44000.00, 10, 'HappyMealMcNuggets4pcs.png', 'McDonald\'s'),
 	(69, 'Paket', 'Happy Meal Beef Burger', 44000.00, 10, 'HappyMealBeefBurger.png', 'McDonald\'s'),
 	(70, 'Paket', 'Happy Meal Ayam', 44000.00, 10, 'HappyMealAyam.png', 'McDonald\'s'),
