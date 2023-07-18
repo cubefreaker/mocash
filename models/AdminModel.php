@@ -32,7 +32,7 @@ class AdminModel {
     }
 
     //User
-    function getListUser() {
+    function getListUser($role = null) {
         if($this->userCondition) {
             if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
                 $this->db->where('FALSE');
@@ -41,6 +41,10 @@ class AdminModel {
             } else if($this->userCondition['role'] == 'Admin') {
                 $this->db->where("company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
             }
+        }
+
+        if($role) {
+            $this->db->where("role = '$role'");
         }
 
         return $this->db->from('tb_user')->get();
@@ -210,5 +214,10 @@ class AdminModel {
         } else {
             return false;
         }
+    }
+
+    // Summary
+    function getTotalSales() {
+        return $this->db->select('SUM(total_produk) as total_produk, SUM(total_harga) as total_harga')->from('tb_cart')->where("status = 'Done'")->getOne();
     }
 }

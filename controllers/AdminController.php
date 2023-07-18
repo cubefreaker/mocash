@@ -38,8 +38,16 @@ class Admin {
         if(!in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin'])) {
             header('Location: /admin/product/gallery');
             return;
-        } 
-        
+        }
+
+        $totalSales = $this->model->getTotalSales();
+        $dataDashboard = [
+            'totalUser' => count($this->model->getListUser('User')),
+            'totalProduct' => count($this->model->getListProduct()),
+            'totalProductSold' => $totalSales ? $totalSales['total_produk'] : 0,
+            'totalOrder' => count($this->model->getListCart('Done')),
+            'totalSales' => $totalSales ? $totalSales['total_harga'] : 0,
+        ];
         require './views/admin_page/dashboard.php';
     }
 
