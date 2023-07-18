@@ -126,8 +126,26 @@ class AdminModel {
 
     function getCartActive($userId) {
         $cart = $this->db->from('tb_cart')->where("user_id = $userId AND status = 'Pending'")->getOne();
-        $cart['detail'] = $cart ? $this->db->from('tb_cart_detail')->where("id_cart = {$cart['id']}")->get() : [];
+        
+        if($cart) {
+            $cart['detail'] = $this->getCartDetail($cart['id']);
+        } else {
+            $cart['detail'] = [];
+        }
+
         return $cart;
+    }
+
+    function getCartDetail($cartId) {
+        return $this->db->select('tb_cart_detail.id, tb_cart_detail.id_product, tb_product.nama, tb_product.harga, tb_cart_detail.jumlah, tb_cart_detail.harga AS total')->from('tb_cart_detail')->join('INNER JOIN tb_product ON tb_product.id=id_product')->where("id_cart = $cartId")->get();
+    }
+
+    function getDetailCart($cartDetailId) {
+        return $this->db->from('tb_cart_detail')->where("id = $cartDetailId")->getOne();
+    }
+
+    function getCart($cartId) {
+        return $this->db->from('tb_cart')->where("id = $cartId")->getOne();
     }
 
     function addCart($userId, $userEmail) {
@@ -135,6 +153,8 @@ class AdminModel {
             'user_id' => $userId,
             'user_email' => $userEmail,
             'status' => 'Pending',
+            'company' => $this->userCondition ? $this->userCondition['company'] : null,
+            'cabang' => $this->userCondition ? $this->userCondition['cabang'] : null,
         ]);
     }
 
@@ -166,6 +186,10 @@ class AdminModel {
         }
     }
 
+    function deleteCartDetail($id) {
+        return $this->db->where("id = $id")->delete('tb_cart_detail');
+    }
+
     function minProductStock($id, $count) {
         $currentStock = $this->db->select('stok')->from('tb_product')->where("id = $id")->getOne();
         if($currentStock) {
@@ -178,10 +202,10 @@ class AdminModel {
     }
 
     function plusProductStock($id, $count) {
-        $currentStock = $this->db->select('stock')->from('tb_product')->where("id = $id")->getOne();
+        $currentStock = $this->db->select('stok')->from('tb_product')->where("id = $id")->getOne();
         if($currentStock) {
             return $this->db->where("id = $id")->update('tb_product', [
-                'stock' => $currentStock['stock'] + $count
+                'stok' => $currentStock['stok'] + $count
             ]);
         } else {
             return false;

@@ -75,13 +75,31 @@ switch ($request) {
     case '/admin/product/cart':
         require './controllers/AdminController.php';
         $admin = new Admin();
-        $admin->productCartPage();
+        $admin->cartPage();
         break;
 
-    case '/admin/product/addCart':
+    case '/admin/product/cart/add':
         require './controllers/AdminController.php';
         $admin = new Admin();
-        $admin->productAddCart();
+        $admin->cartAdd();
+        break;
+
+    case '/admin/product/cart/deleteDetail':
+        require './controllers/AdminController.php';
+        $admin = new Admin();
+        $admin->cartDeleteDetail();
+        break;
+
+    case '/admin/product/cart/cancel':
+        require './controllers/AdminController.php';
+        $admin = new Admin();
+        $admin->cartCancel();
+        break;
+    
+    case '/admin/product/cart/checkout':
+        require './controllers/AdminController.php';
+        $admin = new Admin();
+        $admin->cartCheckout();
         break;
 
     case '/admin/products':
@@ -114,6 +132,18 @@ switch ($request) {
         require './controllers/AdminController.php';
         $admin = new Admin();
         $admin->productDelete();
+        break;
+
+    case '/admin/sales':
+        require './controllers/AdminController.php';
+        $admin = new Admin();
+        $admin->salesPage();
+        break;
+
+    case '/admin/sales/detail':
+        require './controllers/AdminController.php';
+        $admin = new Admin();
+        $admin->salesDetailPage();
         break;
 
     default:

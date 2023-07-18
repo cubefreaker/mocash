@@ -8,7 +8,9 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Keranjang</h1>
+            <a href="/admin/sales"><i class="fas fa-chevron-left"></i>&nbsp;Back</a>
+            <br>
+            <h1>Detail Penjualan</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -31,7 +33,6 @@
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total</th>
-                                <th class="text-center">Action</th>
                             </tr>
                           </thead>
                           <thead id="filter">
@@ -40,40 +41,23 @@
                                 <th>Harga</th>
                                 <th>Jumlah</th>
                                 <th>Total</th>
-                                <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <?php foreach($this->cart['detail'] as $c){ ?>
+                            <?php foreach($cart['detail'] as $c){ ?>
                             <tr>
                                 <td><?= $c['nama'] ?></td>
                                 <td>Rp. <?= number_format($c['harga'], 2, ',', '.') ?></td>
                                 <td><?= $c['jumlah'] ?></td>
                                 <td>Rp. <?= number_format($c['total'], 2, ',', '.') ?></td>
-                                <td class="text-center">
-                                    <a href="/admin/product/cart/deleteDetail?id=<?= $c['id'] ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                </td>
                             </tr>
                             <?php } ?>
                           </tbody>
                         </table>
                     </div>
-                    <?php if(!empty($this->cart['detail'])) { ?>
+                    <?php if(!empty($cart['detail'])) { ?>
                         <div class="col-12 mt-5">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <form id="formBayar" action="/admin/product/cart/checkout" method="POST">
-                                        <label for="pembayaran">Jumlah Bayar</label>
-                                        <input type="number" name="pembayaran" class="form-control">
-                                    </form>
-                                </div>
-                                <div class="col-sm-8 text-right">
-                                    <h2>Total Harga: Rp. <?= number_format($this->cart['total_harga'], 2, ',', '.') ?></h2>
-                                </div>
-                            </div>
-                            <div class="float-right">
-                                <a href="/admin/product/cart/cancel?id=<?= $this->cart['id'] ?>" class="btn btn-danger">Cancel</a>
-                                <button type="submit" form="formBayar" class="btn btn-primary">Checkout</button>
+                            <h2>Total Harga: Rp. <?= number_format($cart['total_harga'], 2, ',', '.') ?></h2>
                             </div>
                         </div>
                     <?php } ?>

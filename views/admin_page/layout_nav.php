@@ -52,6 +52,16 @@
               </a>
             </li>
             </li>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/sales" class="nav-link">
+                <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>
+                  Sales
+                </p>
+              </a>
+            </li>
+            </li>
             <li class="nav-item">
               <a href="/admin/users" class="nav-link">
                 <i class="nav-icon fas fa-users"></i>

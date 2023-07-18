@@ -98,6 +98,7 @@ class DB {
         $values = implode("', '", array_values($data));
         $query = "INSERT INTO $table ($fields) VALUES ('$values')";
         $result = $this->connection->query($query);
+        $this->reset();
         return $this->connection->insert_id;
     }
 
@@ -116,7 +117,7 @@ class DB {
     public function delete($table) {
         $query = "DELETE FROM $table $this->where";
         $result = $this->connection->query($query);
-        
+        $this->reset();
         return $result;
     }
 }

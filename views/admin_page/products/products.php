@@ -38,6 +38,16 @@
                         <th class="text-center">Action</th>
                     </tr>
                   </thead>
+                  <thead id="filter">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Kategori</th>
+                        <th>Company</th>
+                        <th>Action</th>
+                    </tr>
+                  </thead>
                   <tbody>
                     <?php foreach($listProduct as $u){ ?>
                     <tr>
@@ -82,7 +92,7 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    $('#listProduct').DataTable({
+    let table = $('#listProduct').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -91,7 +101,21 @@
       "autoWidth": true,
       "responsive": true,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#listProduct_wrapper .col-md-6:eq(0)');
+    });
+
+    // Add datatable button
+    table.buttons().container().appendTo('#listProduct_wrapper .col-md-6:eq(0)');
+
+    // Setup - add a text input to each footer cell
+    $('#listProduct thead#filter th').each(function (i) {
+    let title = $('#listProduct thead th').eq($(this).index()).text();
+    $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
+    } );
+
+    // Filter event handler
+    $(table.table().container()).on('keyup', 'thead#filter input', function () {
+        table.column($(this).data('index')).search(this.value).draw();
+    } );
   });
 </script>
 

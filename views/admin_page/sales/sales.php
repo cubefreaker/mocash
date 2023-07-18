@@ -8,13 +8,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>List User</h1>
+            <h1>List Penjualan</h1>
           </div>
-          <?php if(in_array($this->user['role'], ['Owner', 'Super Admin'])) { ?>
-            <div class="col-sm-6">
-              <a href="/admin/user/add" class="btn btn-primary float-right">Add User</a>
-            </div>
-          <?php } ?>
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -25,45 +20,50 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <!-- <div class="card-header">
-                <h3 class="card-title">List User</h3>
-              </div> -->
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="listUser" class="table table-bordered table-striped">
+                <table id="listCart" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th>ID</th>
                         <th>Cabang</th>
-                        <th>Company</th>
+                        <th>Total Item</th>
+                        <th>Total Harga</th>
+                        <th>User</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
                   </thead>
                   <thead id="filter">
                     <tr>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th>ID</th>
                         <th>Cabang</th>
-                        <th>Company</th>
+                        <th>Total Item</th>
+                        <th>Total Harga</th>
+                        <th>User</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach($listUser as $u){ ?>
+                    <?php foreach($listCart as $c){ ?>
                     <tr>
-                        <td><?= $u['fullname'] ?></td>
-                        <td><?= $u['email'] ?></td>
-                        <td><?= $u['role'] ?></td>
-                        <td><?= $u['cabang'] ?></td>
-                        <td><?= $u['company'] ?></td>
+                        <td><?= $c['id'] ?></td>
+                        <td><?= $c['cabang'] ?></td>
+                        <td><?= $c['total_produk'] ?></td>
+                        <td>Rp. <?= number_format($c['total_harga'], 2, ',', '.') ?></td>
+                        <td><?= $c['user_email'] ?></td>
                         <td class="text-center">
-                            <a href="/admin/user/edit?id=<?= $u['id'] ?>" class="btn btn-warning">Edit</a>
-                            <?php if($u['id'] != $this->user['id'] && in_array($this->user['role'], ['Owner', 'Super Admin'])) { ?>
-                              <a href="/admin/user/delete?id=<?= $u['id'] ?>" class="btn btn-danger">Delete</a>
+                            <?php if($c['status'] == 'Pending') { ?>
+                                <span class="badge badge-warning"><?= strtoupper($c['status']) ?></span>
+                            <?php } else if($c['status'] == 'Done') { ?>
+                                <span class="badge badge-success"><?= strtoupper($c['status']) ?></span>
+                            <?php } else if($c['status'] == 'Cancel') { ?>
+                                <span class="badge badge-danger"><?= strtoupper($c['status']) ?></span>
                             <?php } ?>
+                        </td>
+                        <td class="text-center">
+                            <a href="/admin/sales/detail?id=<?= $c['id'] ?>" class="btn btn-info">Detail</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -94,8 +94,8 @@
 
 <!-- Page specific script -->
 <script>
-  $(function () {
-    let table = $('#listUser').DataTable({
+  $(document).ready(function () {
+    let table = $('#listCart').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -107,12 +107,12 @@
     });
 
     // Add datatable button
-    table.buttons().container().appendTo('#listUser_wrapper .col-md-6:eq(0)');
-
+    table.buttons().container().appendTo('#listCart_wrapper .col-md-6:eq(0)');
+    
     // Setup - add a text input to each footer cell
-    $('#listUser thead#filter th').each(function (i) {
-    let title = $('#listUser thead th').eq($(this).index()).text();
-    $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
+    $('#listCart thead#filter th').each(function (i) {
+      let title = $('#listCart thead th').eq($(this).index()).text();
+      $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
     } );
 
     // Filter event handler

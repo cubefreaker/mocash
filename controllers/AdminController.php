@@ -37,11 +37,13 @@ class Admin {
     public function index() {
         if(!in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin'])) {
             header('Location: /admin/product/gallery');
+            return;
         } 
         
         require './views/admin_page/dashboard.php';
     }
 
+    // User
     public function usersPage() {
         $listUser = $this->model->getListUser();
         require './views/admin_page/users/users.php';
@@ -50,6 +52,7 @@ class Admin {
     public function userAddPage() {
         if(!in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin'])) {
             header('Location: /admin/product/gallery');
+            return;
         }
 
         require './views/admin_page/users/user_add.php';
@@ -67,12 +70,14 @@ class Admin {
         if(!$fullname || !$email || !$password || !$role) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah user: Data tidak lengkap';
             header('Location: /admin/user/add');
+            return;
         }
 
         $checkUser = $this->model->getUserByEmail($email);
         if($checkUser) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah user: Email sudah terdaftar';
             header('Location: /admin/user/add');
+            return;
         }
 
         $dataInsert = [
@@ -88,15 +93,18 @@ class Admin {
         if($this->model->addUser($dataInsert)) {
             $_SESSION['flash_message_success'] = 'Berhasil tambah user';
             header('Location: /admin/users');
+            return;
         } else {
             $_SESSION['flash_message_error'] = 'Gagal tambah user';
             header('Location: /admin/user/add');
+            return;
         }
     }
 
     public function userEditPage() {
         if(!in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin'])) {
             header('Location: /admin/product/gallery');
+            return;
         }
 
         $id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -105,6 +113,7 @@ class Admin {
         if(!$id || !$user) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit user: User tidak ditemukan';
             header('Location: /admin/users');
+            return;
         }
 
         require './views/admin_page/users/user_edit.php';
@@ -123,12 +132,14 @@ class Admin {
         if(!$id || !$fullname || !$email || !$role) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit user: Data tidak lengkap';
             header('Location: /admin/user/edit?id='.$id);
+            return;
         }
 
         $checkUser = $this->model->getUserByEmail($email);
         if($checkUser && $checkUser['id'] != $id) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit user: Email sudah terdaftar';
             header('Location: /admin/user/edit?id='.$id);
+            return;
         }
 
         $dataUpdate = [
@@ -147,9 +158,11 @@ class Admin {
         if($this->model->editUser($id, $dataUpdate)) {
             $_SESSION['flash_message_success'] = 'Berhasil edit user';
             header('Location: /admin/users');
+            return;
         } else {
             $_SESSION['flash_message_error'] = 'Gagal edit user';
             header('Location: /admin/user/edit?id='.$id);
+            return;
         }
     }
 
@@ -159,6 +172,7 @@ class Admin {
         if(!$id) {
             $_SESSION['flash_message_error'] = 'Tidak bisa hapus user: User tidak ditemukan';
             header('Location: /admin/users');
+            return;
         }
 
         if($this->model->deleteUser($id)) {
@@ -167,8 +181,10 @@ class Admin {
             $_SESSION['flash_message_error'] = 'Gagal hapus user';
         }
         header('Location: /admin/users');
+        return;
     }
 
+    // Product
     public function productGalleryPage() {
         $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : 'Populer';
         $listProduct = $this->model->getListProduct($kategori);
@@ -183,14 +199,11 @@ class Admin {
     public function productAddPage() {
         if(!in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin'])) {
             header('Location: /admin/product/gallery');
+            return;
         }
         
         $listCompany = $this->model->getListCompany();
         require './views/admin_page/products/product_add.php';
-    }
-
-    public function productCartPage() {
-        require './views/admin_page/products/product_cart.php';
     }
 
     public function productAdd() {
@@ -203,12 +216,14 @@ class Admin {
         if(!$nama || !$kategori || !$harga || !$stok || !$company) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah produk: Data tidak lengkap';
             header('Location: /admin/product/add');
+            return;
         }
 
         $checkProduct = $this->model->getProductByName($nama);
         if($checkProduct) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah produk: Produk sudah terdaftar';
             header('Location: /admin/product/add');
+            return;
         }
 
         $dataInsert = [
@@ -222,9 +237,11 @@ class Admin {
         if($this->model->addProduct($dataInsert)) {
             $_SESSION['flash_message_success'] = 'Berhasil tambah produk';
             header('Location: /admin/products');
+            return;
         } else {
             $_SESSION['flash_message_error'] = 'Gagal tambah produk';
             header('Location: /admin/product/add');
+            return;
         }
     }
 
@@ -235,6 +252,7 @@ class Admin {
         if(!$id || !$product) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit: Produk tidak ditemukan';
             header('Location: /admin/products');
+            return;
         }
 
         $listCompany = $this->model->getListCompany();
@@ -252,12 +270,14 @@ class Admin {
         if(!$id || !$nama || !$kategori || !$harga || !$company) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit produk: Data tidak lengkap';
             header('Location: /admin/product/edit?id='.$id);
+            return;
         }
 
         $checkProduct = $this->model->getProductByName($nama);
         if($checkProduct && $checkProduct['id'] != $id) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit produk: Produk sudah terdaftar';
             header('Location: /admin/product/edit?id='.$id);
+            return;
         }
 
         $dataUpdate = [
@@ -271,9 +291,11 @@ class Admin {
         if($this->model->editProduct($id, $dataUpdate)) {
             $_SESSION['flash_message_success'] = 'Berhasil edit produk';
             header('Location: /admin/products');
+            return;
         } else {
             $_SESSION['flash_message_error'] = 'Gagal edit produk';
             header('Location: /admin/product/edit?id='.$id);
+            return;
         }
     }
 
@@ -283,6 +305,7 @@ class Admin {
         if(!$id) {
             $_SESSION['flash_message_error'] = 'Tidak bisa hapus produk: Produk tidak ditemukan';
             header('Location: /admin/products');
+            return;
         }
 
         if($this->model->deleteProduct($id)) {
@@ -292,9 +315,15 @@ class Admin {
         }
 
         header('Location: /admin/products');
+        return;
     }
 
-    public function productAddCart() {
+    // Cart
+    public function cartPage() {
+        require './views/admin_page/products/product_cart.php';
+    }
+
+    public function cartAdd() {
         $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : 'Populer';
         $productId = isset($_GET['id']) ? $_GET['id'] : '';
         $cartId = isset($_GET['cart_id']) ? $_GET['cart_id'] : '';
@@ -307,6 +336,7 @@ class Admin {
         if(!$productId || !$cartId) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah produk ke keranjang: Produk tidak ditemukan';
             header('Location: /admin/product/gallery?kategori='.$kategori);
+            return;
         }
 
         if($this->model->addProductToCart($this->user, $cartId, $productId, $price)) {
@@ -322,5 +352,114 @@ class Admin {
         }
 
         header('Location: /admin/product/gallery?kategori='.$kategori);
+        return;
     }
+
+    public function cartDeleteDetail() {
+        $cartDetailId = isset($_GET['id']) ? $_GET['id'] : '';
+
+        $cartDetail = $this->model->getDetailCart($cartDetailId);
+        $cart = $cartDetail ? $this->model->getCart($cartDetail['id_cart']) : '';
+
+        if(!$cartDetailId || !$cartDetail || !$cart) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa hapus produk dari keranjang: Produk tidak ditemukan';
+            header('Location: /admin/product/cart');
+            return;
+        }
+
+        if($this->model->deleteCartDetail($cartDetailId)) {
+            $this->model->updateCart($cartDetail['id_cart'], [
+                'total_produk' => $cart['total_produk'] - $cartDetail['jumlah'],
+                'total_harga' => $cart['total_harga'] - $cartDetail['harga'],
+            ]);
+            $this->model->plusProductStock($cartDetail['id_product'], $cartDetail['jumlah']);
+            $_SESSION['flash_message_success'] = 'Berhasil hapus produk dari keranjang';
+        } else {
+            $_SESSION['flash_message_error'] = 'Gagal hapus produk dari keranjang';
+        }
+
+        header('Location: /admin/product/cart');
+        return;
+    }
+
+    public function cartCancel() {
+        $cartId = isset($_GET['id']) ? $_GET['id'] : '';
+
+        if(!$cartId) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa hapus keranjang: Keranjang tidak ditemukan';
+            header('Location: /admin/product/gallery');
+            return;
+        }
+
+        if($this->model->updateCart($cartId, [ 'waktu_selesai' => date('Y-m-d H:i:s'), 'status' => 'Cancel' ])) {
+            $_SESSION['flash_message_success'] = 'Berhasil cancel keranjang';
+            foreach($this->cart['detail'] as $detail) {
+                $this->model->plusProductStock($detail['id_product'], $detail['jumlah']);
+            }
+        } else {
+            $_SESSION['flash_message_error'] = 'Gagal cancel keranjang';
+        }
+
+        header('Location: /admin/product/gallery');
+        return;
+    }
+
+    public function cartCheckout(){
+        $pembayaran = isset($_POST['pembayaran']) ? $_POST['pembayaran'] : 0;
+        
+        if(!$pembayaran) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa checkout: Harap Isi Nominal Pembayaran';
+            header('Location: /admin/product/cart');
+            return;
+        } else if($pembayaran < $this->cart['total_harga']) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa checkout: Nominal Pembayaran Kurang';
+            header('Location: /admin/product/cart');
+            return;
+        }
+
+        if(!isset($this->cart['id'])) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa checkout: Keranjang tidak ditemukan';
+            header('Location: /admin/product/cart');
+            return;
+        }
+
+        $sisaPembayaran = $pembayaran - $this->cart['total_harga'];
+        $updateCart = $this->model->updateCart($this->cart['id'], [
+            'pembayaran' => $pembayaran, 
+            'sisa_pembayaran' => $sisaPembayaran,
+            'waktu_selesai' => date('Y-m-d H:i:s'), 
+            'status' => 'Done' 
+        ]);
+
+        if($updateCart) {
+            $_SESSION['flash_message_success'] = 'Berhasil checkout';
+            require './views/admin_page/products/printout_bill.php';
+        } else {
+            $_SESSION['flash_message_error'] = 'Gagal checkout';
+            header('Location: /admin/product/cart');
+            return;
+        }
+    }
+
+    // Sales
+    public function salesPage() {
+        $listCart = $this->model->getListCart();
+        require './views/admin_page/sales/sales.php';
+    }
+
+    public function salesDetailPage() {
+        $cartId = isset($_GET['id']) ? $_GET['id'] : '';
+        $cart = $cartId ? $this->model->getCart($cartId) : '';
+
+        if(!$cartId || !$cart) {
+            $_SESSION['flash_message_error'] = 'Tidak bisa lihat detail: penjualan tidak ditemukan';
+            header('Location: /admin/product/sales');
+            return;
+        }
+
+        $cart['detail'] = $this->model->getCartDetail($cartId);
+
+        require './views/admin_page/sales/sales_detail.php';
+    }
+
 }
