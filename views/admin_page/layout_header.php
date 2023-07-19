@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="/assets/admin_template/dist/css/adminlte.min.css">
   <!-- jQuery -->
   <script src="/assets/admin_template/plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="/assets/admin_template/plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Bootstrap 4 -->
   <script src="/assets/admin_template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- DataTables  & Plugins -->
@@ -36,6 +38,8 @@
   <script src="/assets/admin_template/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
   <!-- Ekko Lightbox -->
   <script src="/assets/admin_template/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+  <!-- ChartJS -->
+  <script src="/assets/admin_template/plugins/chart.js/Chart.min.js"></script>
   <!-- AdminLTE App -->
   <script src="/assets/admin_template/dist/js/adminlte.min.js"></script>
 </head>

@@ -48,6 +48,22 @@ class Admin {
             'totalOrder' => count($this->model->getListCart('Done')),
             'totalSales' => $totalSales ? $totalSales['total_harga'] : 0,
         ];
+
+        $salesProductChart = $this->model->getSalesProductChart(date('Y'));
+        $salesProductChartLastYear = $this->model->getSalesProductChart(date('Y') - 1);
+        $dataChart = [
+            'salesChart' => [
+                'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
+                'sales' => $salesProductChart['sales'],
+                'salesLastYear' => $salesProductChartLastYear['sales'],
+            ],
+            'productsChart' => [
+                'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Des'],
+                'products' => $salesProductChart['product'],
+                'productsLastYear' => $salesProductChartLastYear['product'],
+            ],
+        ];
+        
         require './views/admin_page/dashboard.php';
     }
 

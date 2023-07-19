@@ -226,4 +226,38 @@ class AdminModel {
 
         return $this->db->select('SUM(total_produk) as total_produk, SUM(total_harga) as total_harga')->from('tb_cart')->where("status = 'Done'")->getOne();
     }
+
+    function getSalesProductChart($year) {
+        if($this->userCondition) {
+            if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
+                $this->db->where('FALSE');
+            } else if($this->userCondition['role'] == 'Super Admin') {
+                $this->db->where("company = '{$this->userCondition['company']}'");
+            } else if($this->userCondition['role'] == 'Admin') {
+                $this->db->where("company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
+            }
+        }
+
+        $result = $this->db->select('
+                    MONTH(IFNULL(waktu_selesai, waktu_buat)) as month,
+                    SUM(total_produk) as total_produk,
+                    SUM(total_harga) as total_harga')
+                ->from('tb_cart')
+                ->where("status = 'Done' AND YEAR(IFNULL(waktu_selesai, waktu_buat)) = $year")
+                ->groupBy('MONTH(IFNULL(waktu_selesai, waktu_buat))')
+                ->get();
+
+        $data = [
+            'sales' => [],
+            'product' => [],
+        ];
+        
+        $monthCount = 11;
+        for($i = 0; $i <= $monthCount; $i++) {
+            $data['sales'][$i] = isset($result[$i]) ? $result[$i]['total_harga'] : 0;
+            $data['product'][$i] = isset($result[$i]) ? $result[$i]['total_produk'] : 0;
+        }
+
+        return $data;
+    }
 }

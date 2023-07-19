@@ -80,8 +80,6 @@
     let flash_message_error = '<?= $this->flash_message['error'] ?>';
     let flash_message_info = '<?= $this->flash_message['info'] ?>';
 
-    console.log(flash_message_error)
-
     if(flash_message_success != ''){
       $(document).Toasts('create', {
         class: 'bg-success',
