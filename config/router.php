@@ -3,6 +3,7 @@
 $request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 switch ($request) {
+    //Route Home Page
     case '':
     case '/':
         require './controllers/HomeController.php';
@@ -10,6 +11,37 @@ switch ($request) {
         $home->index();
         break;
 
+    case '/home':
+        require './controllers/HomeController.php';
+        $home = new Home();
+        $home->homePage();
+        break;
+    
+    case '/about':
+        require './controllers/HomeController.php';
+        $home = new Home();
+        $home->aboutPage();
+        break;
+    
+    case '/contact':
+        require './controllers/HomeController.php';
+        $home = new Home();
+        $home->contactPage();
+        break;
+    
+    case '/product':
+        require './controllers/HomeController.php';
+        $home = new Home();
+        $home->productPage();
+        break;
+    
+    case '/profile':
+        require './controllers/HomeController.php';
+        $home = new Home();
+        $home->profilePage();
+        break;
+
+    //Route Admin Panel
     case '/admin':
     case '/admin/dashboard':
         require './controllers/AdminController.php';
