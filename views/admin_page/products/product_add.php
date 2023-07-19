@@ -24,37 +24,60 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <!-- form start -->
-              <form id="formAddProduct" method="POST" action="/admin/product/add">
+              <form id="formAddProduct" method="POST" action="/admin/product/add" enctype="multipart/form-data">
                 <div class="card-body">
-                  <div class="form-group">
-                    <label for="nama">Nama Produk</label>
-                    <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="kategori">Kategori</label>
-                    <select class="form-control" name="kategori" required>
-                        <option value="Makanan">Makanan</option>
-                        <option value="Minuman">Minuman</option>
-                        <option value="Cemilan">Cemilan</option>
-                        <option value="Dessert">Dessert</option>
-                        <option value="Paket">Paket</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="harga">Harga</label>
-                    <input type="number" step="0.1" class="form-control" name="harga" id="harga" placeholder="Enter harga" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="stok">Stok</label>
-                    <input type="number" class="form-control" name="stok" id="stok" placeholder="Enter stok" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="company">Company</label>
-                    <select class="form-control" name="company" required>
-                        <?php foreach ($listCompany as $company) { ?>
-                            <option value="<?= $company['company'] ?>"><?= $company['company'] ?></option>
-                        <?php } ?>
-                    </select>
+                  <div class="row">
+                    <div class="col-12 text-center mb-4">
+                      <div class="row">
+                        <div class="col-12">
+                          <img id="imgPreview" width="250" height="250" src="/assets/image/default-placeholder.png" alt="pic" />
+                        </div>
+                        <div class="col-12 mt-3">
+                          <label class="btn btn-sm btn-primary" for="imageUpload">Upload image</label>
+                          <input type="file" name="image" id="imageUpload" hidden />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="nama">Nama Produk</label>
+                        <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="kategori">Kategori</label>
+                        <select class="form-control" name="kategori" required>
+                            <option value="Makanan">Makanan</option>
+                            <option value="Minuman">Minuman</option>
+                            <option value="Cemilan">Cemilan</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Paket">Paket</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="harga">Harga</label>
+                        <input type="number" step="0.1" class="form-control" name="harga" id="harga" placeholder="Enter harga" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="stok">Stok</label>
+                        <input type="number" class="form-control" name="stok" id="stok" placeholder="Enter stok" required>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="company">Company</label>
+                        <select class="form-control" name="company" required>
+                            <?php foreach ($listCompany as $company) { ?>
+                                <option value="<?= $company['company'] ?>"><?= $company['company'] ?></option>
+                            <?php } ?>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -87,6 +110,18 @@
 <!-- Page specific script -->
 <script>
   $(function () {
+    $(document).ready(() => {
+      $("#imageUpload").change(function () {
+        const file = this.files[0];
+        if (file) {
+          let reader = new FileReader();
+          reader.onload = function (event) {
+            $("#imgPreview").attr("src", event.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
   });
 </script>
 

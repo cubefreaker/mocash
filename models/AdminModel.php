@@ -23,8 +23,8 @@ class AdminModel {
     // Company
     function getListCompany() {
         if($this->userCondition) {
-            if(!$this->userCondition['role'] == 'Owner') {
-                $this->db->where("company = '{$this->userCondition['company']}'");
+            if($this->userCondition['role'] != 'Owner') {
+                $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}'");
             }
         }
         
@@ -37,9 +37,9 @@ class AdminModel {
             if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
                 $this->db->where('FALSE');
             } else if($this->userCondition['role'] == 'Super Admin') {
-                $this->db->where("company = '{$this->userCondition['company']}'");
+                $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}'");
             } else if($this->userCondition['role'] == 'Admin') {
-                $this->db->where("company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
+                $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
             }
         }
 
@@ -218,6 +218,16 @@ class AdminModel {
 
     // Summary
     function getTotalSales() {
+        if($this->userCondition) {
+            if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
+                $this->db->where('FALSE');
+            } else if($this->userCondition['role'] == 'Super Admin') {
+                $this->db->where("company = '{$this->userCondition['company']}'");
+            } else if($this->userCondition['role'] == 'Admin') {
+                $this->db->where("company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
+            }
+        }
+
         return $this->db->select('SUM(total_produk) as total_produk, SUM(total_harga) as total_harga')->from('tb_cart')->where("status = 'Done'")->getOne();
     }
 }

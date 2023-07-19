@@ -111,7 +111,7 @@
                 </p>
               </a>
             </li>
-            <br>
+            <span class="mt-3"></span>
             <li class="nav-item">
               <a href="/admin/product/cart" class="nav-link">
                 <i class="nav-icon fas fa-shopping-cart"></i>
@@ -130,7 +130,7 @@
               </a>
             </li>
           <?php } ?>
-          <br>
+          <span class="mt-3"></span>
           <li class="nav-item">
             <a href="/admin/logout" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>

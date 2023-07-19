@@ -89,12 +89,12 @@ class Admin {
         }
 
         $dataInsert = [
-            'fullname' => $fullname,
+            'fullname' => addslashes($fullname),
             'email' => $email,
             'password' => $password,
-            'cabang' => $cabang,
-            'company' => $company,
-            'alamat' => $alamat,
+            'cabang' => addslashes($cabang),
+            'company' => addslashes($company),
+            'alamat' => addslashes($alamat),
             'role' => $role,
         ];        
 
@@ -151,11 +151,11 @@ class Admin {
         }
 
         $dataUpdate = [
-            'fullname' => $fullname,
+            'fullname' => addslashes($fullname),
             'email' => $email,
-            'cabang' => $cabang,
-            'company' => $company,
-            'alamat' => $alamat,
+            'cabang' => addslashes($cabang),
+            'company' => addslashes($company),
+            'alamat' => addslashes($alamat),
             'role' => $role,
         ];
 
@@ -220,6 +220,7 @@ class Admin {
         $harga = isset($_POST['harga']) ? $_POST['harga'] : 0;
         $stok = isset($_POST['stok']) ? $_POST['stok'] : 0;
         $company = isset($_POST['company']) ? $_POST['company'] : '';
+        $imageFile = isset($_FILES['image']) ? $_FILES['image'] : '';
 
         if(!$nama || !$kategori || !$harga || !$stok || !$company) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah produk: Data tidak lengkap';
@@ -235,14 +236,31 @@ class Admin {
         }
 
         $dataInsert = [
-            'nama' => $nama,
+            'nama' => addslashes($nama),
             'kategori' => $kategori,
             'harga' => $harga,
             'stok' => $stok,
-            'company' => $company,
+            'company' => addslashes($company),
         ];        
         
-        if($this->model->addProduct($dataInsert)) {
+        $insertId = $this->model->addProduct($dataInsert);
+        if($insertId) {
+            if($imageFile) {
+                // Create a direcotry if not exists
+                if (!file_exists('./assets/image/products/')) {
+                    mkdir('./assets/image/products/', 0777, true);
+                }
+                
+                // Save image
+                $imageName = $insertId.'_'.$imageFile['name'];
+                $moveImage = move_uploaded_file($imageFile['tmp_name'], './assets/image/products/'.$imageName);
+
+                // Update image name in database
+                if($moveImage) {
+                    $this->model->editProduct($insertId, ['image' => $imageName]);
+                }
+            }
+
             $_SESSION['flash_message_success'] = 'Berhasil tambah produk';
             header('Location: /admin/products');
             return;
@@ -274,7 +292,9 @@ class Admin {
         $harga = isset($_POST['harga']) ? $_POST['harga'] : 0;
         $stok = isset($_POST['stok']) ? $_POST['stok'] : 0;
         $company = isset($_POST['company']) ? $_POST['company'] : '';
-
+        $imageOldName = isset($_POST['imageOldName']) ? $_POST['imageOldName'] : '';
+        $imageFile = isset($_FILES['image']) ? $_FILES['image'] : '';
+        
         if(!$id || !$nama || !$kategori || !$harga || !$company) {
             $_SESSION['flash_message_error'] = 'Tidak bisa edit produk: Data tidak lengkap';
             header('Location: /admin/product/edit?id='.$id);
@@ -289,14 +309,31 @@ class Admin {
         }
 
         $dataUpdate = [
-            'nama' => $nama,
+            'nama' => addslashes($nama),
             'kategori' => $kategori,
             'harga' => $harga,
             'stok' => $stok,
-            'company' => $company,
+            'company' => addslashes($company),
         ];
 
         if($this->model->editProduct($id, $dataUpdate)) {
+            if($imageFile) {
+                // Create a direcotry if not exists
+                if (!file_exists('./assets/image/products/')) {
+                    mkdir('./assets/image/products/', 0777, true);
+                }
+                
+                // Save image
+                $imageName = $id.'_'.$imageFile['name'];
+                $moveImage = move_uploaded_file($imageFile['tmp_name'], './assets/image/products/'.$imageName);
+
+                // Update image name in database
+                if($moveImage) {
+                    $this->model->editProduct($id, ['image' => $imageName]);
+                    unlink('./assets/image/products/'.$imageOldName);
+                }
+            }
+
             $_SESSION['flash_message_success'] = 'Berhasil edit produk';
             header('Location: /admin/products');
             return;
@@ -309,14 +346,16 @@ class Admin {
 
     public function productDelete() {
         $id = isset($_GET['id']) ? $_GET['id'] : '';
-        
-        if(!$id) {
+        $dataProduct = $id ? $this->model->getProduct($id) : '';
+
+        if(!$id || !$dataProduct) {
             $_SESSION['flash_message_error'] = 'Tidak bisa hapus produk: Produk tidak ditemukan';
             header('Location: /admin/products');
             return;
         }
 
         if($this->model->deleteProduct($id)) {
+            unlink('./assets/image/products/'.$dataProduct['image']);
             $_SESSION['flash_message_success'] = 'Berhasil hapus produk';
         } else {
             $_SESSION['flash_message_error'] = 'Gagal hapus produk';

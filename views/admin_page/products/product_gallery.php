@@ -19,11 +19,14 @@
       <div class="container-fluid">
         <div class="row">
           <?php foreach ($listProduct as $p) : ?>
-            <div class="col-sm-3">
+            <div class="col-sm-3 mb-4">
               <div class="row">
                 <div class="col-12">
-                  <a href="/assets/image/products/<?= $p['image'] ?>" data-toggle="lightbox" data-title="<?= $p['nama'] ?>" data-gallery="gallery">
-                    <img src="/assets/image/products/<?= $p['image'] ?>" class="img-fluid mb-2" alt="<?= $p['nama'] ?>" />
+                  <?php
+                    $image = $p['image'] && file_exists('./assets/image/products/' . $p['image']) ? '/assets/image/products/' . $p['image'] : '/assets/image/default-placeholder.png';
+                  ?>
+                  <a href="<?= $image ?>" data-toggle="lightbox" data-title="<?= $p['nama'] ?>" data-gallery="gallery" style="display: flex; justify-content: center">
+                    <img src="<?= $image ?>" class="img-fluid mb-2" alt="<?= $p['nama'] ?>" style="width: 250px; height: 200px" />
                   </a>
                 </div>
                 <div class="col-12 text-center">
@@ -64,7 +67,7 @@
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
       event.preventDefault();
       $(this).ekkoLightbox({
-        alwaysShowClose: true
+        alwaysShowClose: true,
       });
     });
   });
