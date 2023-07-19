@@ -32,19 +32,15 @@ class AdminModel {
     }
 
     //User
-    function getListUser($role = null) {
+    function getListUser() {
         if($this->userCondition) {
             if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
                 $this->db->where('FALSE');
             } else if($this->userCondition['role'] == 'Super Admin') {
                 $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}'");
             } else if($this->userCondition['role'] == 'Admin') {
-                $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
+                $this->db->where("role NOT IN ('Owner', 'Super Admin') AND company = '{$this->userCondition['company']}' AND cabang = '{$this->userCondition['cabang']}'");
             }
-        }
-
-        if($role) {
-            $this->db->where("role = '$role'");
         }
 
         return $this->db->from('tb_user')->get();

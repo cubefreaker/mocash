@@ -55,6 +55,15 @@ class DB {
         return $this;
     }
 
+    public function whereIn($field, $values) {
+        if($this->where) {
+            $this->where .= " AND $field IN ($values)";
+        } else {
+            $this->where = "WHERE $field IN ($values)";
+        }
+        return $this;
+    }
+
     public function groupBy($groupBy) {
         $this->groupBy = "GROUP BY $groupBy";
         return $this;

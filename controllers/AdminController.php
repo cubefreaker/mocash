@@ -42,7 +42,7 @@ class Admin {
 
         $totalSales = $this->model->getTotalSales();
         $dataDashboard = [
-            'totalUser' => count($this->model->getListUser('User')),
+            'totalUser' => count($this->model->getListUser()),
             'totalProduct' => count($this->model->getListProduct()),
             'totalProductSold' => $totalSales ? $totalSales['total_produk'] : 0,
             'totalOrder' => count($this->model->getListCart('Done')),
@@ -96,6 +96,8 @@ class Admin {
             'company' => addslashes($company),
             'alamat' => addslashes($alamat),
             'role' => $role,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user['email'],
         ];        
 
         if($this->model->addUser($dataInsert)) {
@@ -157,6 +159,8 @@ class Admin {
             'company' => addslashes($company),
             'alamat' => addslashes($alamat),
             'role' => $role,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $this->user['email'],
         ];
 
         if($password) {
@@ -241,6 +245,8 @@ class Admin {
             'harga' => $harga,
             'stok' => $stok,
             'company' => addslashes($company),
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => $this->user['email'],
         ];        
         
         $insertId = $this->model->addProduct($dataInsert);
@@ -314,6 +320,8 @@ class Admin {
             'harga' => $harga,
             'stok' => $stok,
             'company' => addslashes($company),
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_by' => $this->user['email'],
         ];
 
         if($this->model->editProduct($id, $dataUpdate)) {

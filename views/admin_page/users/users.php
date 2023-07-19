@@ -38,6 +38,7 @@
                         <th class="text-center">Role</th>
                         <th class="text-center">Cabang</th>
                         <th class="text-center">Company</th>
+                        <th class="text-center">Dibuat</th>
                         <th class="text-center">Action</th>
                     </tr>
                   </thead>
@@ -48,6 +49,7 @@
                         <th>Role</th>
                         <th>Cabang</th>
                         <th>Company</th>
+                        <th>Dibuat</th>
                         <th>Action</th>
                     </tr>
                   </thead>
@@ -59,6 +61,7 @@
                         <td><?= $u['role'] ?></td>
                         <td><?= $u['cabang'] ?></td>
                         <td><?= $u['company'] ?></td>
+                        <td class="text-right"><?= $u['created_at'] ?></td>
                         <td class="text-center">
                             <a href="/admin/user/edit?id=<?= $u['id'] ?>" class="btn btn-warning">Edit</a>
                             <?php if($u['id'] != $this->user['id'] && in_array($this->user['role'], ['Owner', 'Super Admin'])) { ?>

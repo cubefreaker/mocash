@@ -30,6 +30,7 @@
                         <th class="text-center">Total Item</th>
                         <th class="text-center">Total Harga</th>
                         <th class="text-center">User</th>
+                        <th class="text-center">Waktu</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -41,6 +42,7 @@
                         <th>Total Item</th>
                         <th>Total Harga</th>
                         <th>User</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -53,6 +55,7 @@
                         <td class="text-center"><?= $c['total_produk'] ?></td>
                         <td class="text-right">Rp. <?= number_format($c['total_harga'], 2, ',', '.') ?></td>
                         <td><?= $c['user_email'] ?></td>
+                        <td class="text-right"><?= $c['waktu_selesai'] ? $c['waktu_selesai'] : $c['waktu_buat'] ?></td>
                         <td class="text-center">
                             <?php if($c['status'] == 'Pending') { ?>
                                 <span class="badge badge-warning"><?= strtoupper($c['status']) ?></span>
