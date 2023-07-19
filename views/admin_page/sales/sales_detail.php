@@ -29,10 +29,10 @@
                         <table id="cart" class="table table-bordered table-striped">
                           <thead>
                             <tr>
-                                <th>Nama</th>
-                                <th>Harga</th>
-                                <th>Jumlah</th>
-                                <th>Total</th>
+                                <th class="text-center">Nama</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-center">Total</th>
                             </tr>
                           </thead>
                           <thead id="filter">
@@ -47,9 +47,9 @@
                             <?php foreach($cart['detail'] as $c){ ?>
                             <tr>
                                 <td><?= $c['nama'] ?></td>
-                                <td>Rp. <?= number_format($c['harga'], 2, ',', '.') ?></td>
-                                <td><?= $c['jumlah'] ?></td>
-                                <td>Rp. <?= number_format($c['total'], 2, ',', '.') ?></td>
+                                <td class="text-right">Rp. <?= number_format($c['harga'], 2, ',', '.') ?></td>
+                                <td class="text-center"><?= $c['jumlah'] ?></td>
+                                <td class="text-right">Rp. <?= number_format($c['total'], 2, ',', '.') ?></td>
                             </tr>
                             <?php } ?>
                           </tbody>
@@ -105,13 +105,22 @@
     // Setup - add a text input to each footer cell
     $('#cart thead#filter th').each(function (i) {
     let title = $('#cart thead th').eq($(this).index()).text();
-    $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
+    $(this).html(`<input type="text" id="columnFilter_${i}" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
     } );
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead#filter input', function () {
         table.column($(this).data('index')).search(this.value).draw();
     } );
+
+    // Hide column event handler for column visibility
+    $('#cart').on( 'column-visibility.dt', function ( e, settings, column, state ) {
+        if(state) {
+            $(`#columnFilter_${column}`).parent().show();
+        } else {
+            $(`#columnFilter_${column}`).parent().hide();
+        }
+    });
   });
 </script>
 

@@ -33,11 +33,11 @@
                 <table id="listUser" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Cabang</th>
-                        <th>Company</th>
+                        <th class="text-center">Nama</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Cabang</th>
+                        <th class="text-center">Company</th>
                         <th class="text-center">Action</th>
                     </tr>
                   </thead>
@@ -112,13 +112,22 @@
     // Setup - add a text input to each footer cell
     $('#listUser thead#filter th').each(function (i) {
     let title = $('#listUser thead th').eq($(this).index()).text();
-    $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
+    $(this).html(`<input type="text" id="columnFilter_${i}" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
     } );
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead#filter input', function () {
         table.column($(this).data('index')).search(this.value).draw();
     } );
+
+    // Hide column event handler for column visibility
+    $('#listUser').on( 'column-visibility.dt', function ( e, settings, column, state ) {
+        if(state) {
+            $(`#columnFilter_${column}`).parent().show();
+        } else {
+            $(`#columnFilter_${column}`).parent().hide();
+        }
+    });
   });
 </script>
 

@@ -25,11 +25,11 @@
                 <table id="listCart" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Cabang</th>
-                        <th>Total Item</th>
-                        <th>Total Harga</th>
-                        <th>User</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Cabang</th>
+                        <th class="text-center">Total Item</th>
+                        <th class="text-center">Total Harga</th>
+                        <th class="text-center">User</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -50,8 +50,8 @@
                     <tr>
                         <td><?= $c['id'] ?></td>
                         <td><?= $c['cabang'] ?></td>
-                        <td><?= $c['total_produk'] ?></td>
-                        <td>Rp. <?= number_format($c['total_harga'], 2, ',', '.') ?></td>
+                        <td class="text-center"><?= $c['total_produk'] ?></td>
+                        <td class="text-right">Rp. <?= number_format($c['total_harga'], 2, ',', '.') ?></td>
                         <td><?= $c['user_email'] ?></td>
                         <td class="text-center">
                             <?php if($c['status'] == 'Pending') { ?>
@@ -112,13 +112,22 @@
     // Setup - add a text input to each footer cell
     $('#listCart thead#filter th').each(function (i) {
       let title = $('#listCart thead th').eq($(this).index()).text();
-      $(this).html(`<input type="text" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
+      $(this).html(`<input type="text" id="columnFilter_${i}" style="width: 100%" placeholder="${title}" data-index="${i}"/>`);
     } );
 
     // Filter event handler
     $(table.table().container()).on('keyup', 'thead#filter input', function () {
         table.column($(this).data('index')).search(this.value).draw();
     } );
+
+    // Hide column event handler for column visibility
+    $('#listCart').on( 'column-visibility.dt', function ( e, settings, column, state ) {
+        if(state) {
+            $(`#columnFilter_${column}`).parent().show();
+        } else {
+            $(`#columnFilter_${column}`).parent().hide();
+        }
+    });
   });
 </script>
 
