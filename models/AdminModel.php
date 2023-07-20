@@ -24,11 +24,11 @@ class AdminModel {
     function getListCompany() {
         if($this->userCondition) {
             if($this->userCondition['role'] != 'Owner') {
-                $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}'");
+                $this->db->where("company = '{$this->userCondition['company']}'");
             }
         }
         
-        return $this->db->select('company')->where('company != "" AND company IS NOT NULL')->from('tb_user')->groupBy('company')->get();
+        return $this->db->select('company')->where('role != "Owner" AND company != "" AND company IS NOT NULL')->from('tb_user')->groupBy('company')->get();
     }
 
     //User
@@ -36,6 +36,8 @@ class AdminModel {
         if($this->userCondition) {
             if(!in_array($this->userCondition['role'], ['Owner', 'Super Admin', 'Admin'])) {
                 $this->db->where('FALSE');
+            } else if($this->userCondition['role'] == 'Owner') {
+                $this->db->whereIn("role", ['Super Admin']);
             } else if($this->userCondition['role'] == 'Super Admin') {
                 $this->db->where("role != 'Owner' AND company = '{$this->userCondition['company']}'");
             } else if($this->userCondition['role'] == 'Admin') {

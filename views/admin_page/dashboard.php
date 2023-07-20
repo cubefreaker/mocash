@@ -65,20 +65,36 @@
           </div>
           <!-- ./col -->
           <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3><?= $dataDashboard['totalUser'] ?></h3>
+            <?php if($this->user['role'] == 'Owner') { ?>
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3><?= $dataDashboard['totalCompany'] ?></h3>
 
-                <p>Karyawan</p>
+                  <p>Company</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-building"></i>
+                </div>
+                <a href="#" class="small-box-footer">Total Company</a>
               </div>
-              <div class="icon">
-                <i class="fas fa-users"></i>
+            <!-- ./col -->
+            <?php } else { ?>
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3><?= $dataDashboard['totalUser'] ?></h3>
+
+                  <p>Karyawan</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <a href="#" class="small-box-footer">Total Karyawan</a>
               </div>
-              <a href="#" class="small-box-footer">Total Karyawan</a>
-            </div>
+            <!-- ./col -->
+            <?php } ?>
           </div>
-          <!-- ./col -->
         </div>
         <!-- /.row -->
         <div class="row">

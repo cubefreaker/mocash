@@ -56,10 +56,11 @@ class DB {
     }
 
     public function whereIn($field, $values) {
+        $arrayCondition = implode("', '", $values);
         if($this->where) {
-            $this->where .= " AND $field IN ($values)";
+            $this->where .= " AND $field IN ('$arrayCondition')";
         } else {
-            $this->where = "WHERE $field IN ($values)";
+            $this->where = "WHERE $field IN ('$arrayCondition')";
         }
         return $this;
     }

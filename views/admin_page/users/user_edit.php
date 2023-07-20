@@ -49,7 +49,7 @@
                   </div>
                   <div class="form-group">
                     <label for="cabang">Company</label>
-                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" value="<?=$user['company']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" value="<?=$user['company']?>" <?= !in_array($this->user['role'], ['Owner']) ? 'disabled' : '' ?> required>
                   </div>
                   <div class="form-group">
                     <label for="alamat">Alamat</label>
@@ -57,7 +57,7 @@
                   </div>
                   <div class="form-group">
                     <label for="role">Role</label>
-                    <select class="form-control" name="role" value="<?=$user['role']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'disabled' : '' ?> required>
+                    <select class="form-control" name="role" value="<?=$user['role']?>" <?= !in_array($this->user['role'], ['Super Admin']) ? 'disabled' : '' ?> <?= $this->user['role'] != 'Owner' ? 'required' : '' ?> >
                       <option value="Super Admin" <?=$user['role'] == 'Super Admin' ? 'selected' : ''?> >Super Admin</option>
                       <option value="Admin" <?=$user['role'] == 'Admin' ? 'selected' : ''?> >Admin</option>
                       <option value="User" <?=$user['role'] == 'User' ? 'selected' : ''?> >User</option>

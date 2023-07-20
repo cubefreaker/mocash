@@ -71,7 +71,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="company">Company</label>
-                        <select class="form-control" name="company" required>
+                        <select class="form-control" name="company" value="<?= $this->user['role'] != 'Owner' ? $this->user['company'] : '' ?>" <?= $this->user['role'] != 'Owner' ? 'disabled' : '' ?> required>
                             <?php foreach ($listCompany as $company) { ?>
                                 <option value="<?= $company['company'] ?>"><?= $company['company'] ?></option>
                             <?php } ?>

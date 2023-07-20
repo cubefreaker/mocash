@@ -76,7 +76,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="company">Company</label>
-                        <select class="form-control" name="company" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'disabled' : '' ?> required>
+                        <select class="form-control" name="company" <?= !in_array($this->user['role'], ['Owner']) ? 'disabled' : '' ?> required>
                             <?php foreach ($listCompany as $company) { ?>
                                 <option value="<?= $company['company'] ?>" <?=$product['company'] == $company['company'] ? 'selected' : ''?> ><?= $company['company'] ?></option>
                             <?php } ?>

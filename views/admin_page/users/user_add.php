@@ -48,7 +48,7 @@
                   </div>
                   <div class="form-group">
                     <label for="cabang">Company</label>
-                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" required>
+                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" value="<?= $this->user['role'] != 'Owner' ? $this->user['company'] : '' ?>" <?= $this->user['role'] != 'Owner' ? 'disabled' : '' ?> required>
                   </div>
                   <div class="form-group">
                     <label for="alamat">Alamat</label>
@@ -56,8 +56,8 @@
                   </div>
                   <div class="form-group">
                     <label for="role">Role</label>
-                    <select class="form-control" name="role" required>
-                      <option value="Super Admin">Super Admin</option>
+                    <select class="form-control" name="role" <?= $this->user['role'] == 'Owner' ? 'disabled' : 'required' ?> >
+                      <option value="Super Admin" selected>Super Admin</option>
                       <option value="Admin">Admin</option>
                       <option value="User">User</option>
                     </select>

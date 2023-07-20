@@ -47,6 +47,7 @@ class Admin {
             'totalProductSold' => $totalSales ? $totalSales['total_produk'] : 0,
             'totalOrder' => count($this->model->getListCart('Done')),
             'totalSales' => $totalSales ? $totalSales['total_harga'] : 0,
+            'totalCompany' => count($this->model->getListCompany()),
         ];
 
         $salesProductChart = $this->model->getSalesProductChart(date('Y'));
