@@ -49,17 +49,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach($listProduct as $u){ ?>
+                    <?php foreach($listProduct as $p){ ?>
                     <tr>
-                        <td><?= $u['nama'] ?></td>
-                        <td class="text-right">Rp. <?= number_format($u['harga'], 2, ',', '.') ?></td>
-                        <td class="text-center"><?= $u['stok'] ?></td>
-                        <td><?= $u['kategori'] ?></td>
-                        <td><?= $u['company'] ?></td>
+                        <td><?= $p['nama'] ?></td>
+                        <td class="text-right">Rp. <?= number_format($p['harga'], 2, ',', '.') ?></td>
+                        <td class="text-center"><?= $p['stok'] ?></td>
+                        <td><?= $p['kategori'] ?></td>
+                        <td><?= $p['company'] ?></td>
                         <td class="text-center">
-                            <a href="/admin/product/edit?id=<?= $u['id'] ?>" class="btn btn-warning">Edit</a>
-                            <?php if($u['id'] != $this->user['id'] && in_array($this->user['role'], ['Owner', 'Super Admin'])) { ?>
-                              <a href="/admin/product/delete?id=<?= $u['id'] ?>" class="btn btn-danger">Delete</a>
+                            <a href="/admin/product/edit?id=<?= $p['id'] ?>" class="btn btn-warning">Edit</a>
+                            <?php if(in_array($this->user['role'], ['Owner', 'Super Admin'])) { ?>
+                              <a href="/admin/product/delete?id=<?= $p['id'] ?>" class="btn btn-danger">Delete</a>
                             <?php } ?>
                         </td>
                     </tr>
