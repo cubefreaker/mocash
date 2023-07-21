@@ -2,12 +2,11 @@
 <head>
     <title>Faktur Pembayaran</title>
     <style>
-        table {
-            margin-top: 20px;
+        html {
+            margin: 10pt
         }
-
         #tabel {
-            font-size:15px;
+            font-size:4pt;
             border-collapse:collapse;
         }
         #tabel td {
@@ -21,23 +20,23 @@
             margin-bottom: 0.5em;
             margin-left: auto;
             margin-right: auto;
-            border-style: inset;
-            border-width: 1px;
+            /* border-style: inset; */
+            border-width: 0.5px;
         }
     </style>
 </head>
-<body style='font-family:tahoma; font-size:8pt;'>
+<body style='font-family:tahoma; font-size:3pt; width:120pt;'>
     <center>
-        <table style='width:350px; font-size:16pt; font-family:calibri; border-collapse: collapse;' border = '0'>
+        <table style='width:100%; font-size:6pt; font-family:calibri; border-collapse: collapse;margin-bottom: 10px' border = '0'>
             <td width='70%' align='CENTER' vertical-align:top'>
                 <span style='color:black;'>
                     <b>MOCASH</b></br>JL XXXXXXXXXXX XXXXXXX
                 </span>
                 </br>
-                <span style='font-size:12pt'>No. : <?= isset($this->cart['id']) ? $this->cart['id'] : 'N/A' ?>, <?= date('d M Y') ?> (user: <?= $this->user['fullname'] ?>), <?= date('H:i:s') ?></span></br>
+                <span style='font-size:4pt'>No. : <?= isset($this->cart['id']) ? $this->cart['id'] : 'N/A' ?>, <?= date('d M Y') ?> (user: <?= $this->user['fullname'] ?>), <?= date('H:i:s') ?></span></br>
             </td>
         </table>
-        <table cellspacing='0' cellpadding='0' style='width:350px; font-size:12pt; font-family:calibri;  border-collapse: collapse;' border='0'>
+        <table cellspacing='0' cellpadding='0' style='width:120pt; font-size:4pt; font-family:calibri;  border-collapse: collapse;' border='0'>
             <tr align='center'>
                 <td width='30%'>Item</td>
                 <td width='30%'>Price</td>
@@ -60,19 +59,19 @@
             </tr>
             <tr>
                 <td colspan = '3'><div style='text-align:right; color:black'>Total : </div></td>
-                <td style='text-align:right; font-size:16pt; color:black'><?= number_format(isset($this->cart['total_harga']) ? $this->cart['total_harga'] : 0, 2, ',', '.') ?></td>
+                <td style='text-align:right; font-size:6pt; color:black'><?= number_format(isset($this->cart['total_harga']) ? $this->cart['total_harga'] : 0, 2, ',', '.') ?></td>
             </tr>
             <tr>
                 <td colspan = '3'><div style='text-align:right; color:black'>Cash : </div></td>
-                <td style='text-align:right; font-size:16pt; color:black'><?= number_format($pembayaran, 2, ',', '.') ?></td>
+                <td style='text-align:right; font-size:6pt; color:black'><?= number_format($this->cart['pembayaran'], 2, ',', '.') ?></td>
             </tr>
             <tr>
                 <td colspan = '3'><div style='text-align:right; color:black'>Change : </div></td>
-                <td style='text-align:right; font-size:16pt; color:black'><?= number_format($sisaPembayaran, 2, ',', '.') ?></td>
+                <td style='text-align:right; font-size:6pt; color:black'><?= number_format($this->cart['sisa_pembayaran'], 2, ',', '.') ?></td>
             </tr>
         </table>
         </br>
-        <table style='width:350; font-size:12pt;' cellspacing='2'>
+        <table style='width:120pt; font-size:4pt;' cellspacing='2'>
             <tr>
                 <td align='center'>****** TERIMAKASIH ******</td>
             </tr>

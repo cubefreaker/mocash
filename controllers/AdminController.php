@@ -1,6 +1,6 @@
 <?php
 require './models/AdminModel.php';
-
+use Dompdf\Dompdf;
 class Admin {
 
     protected $model;
@@ -477,13 +477,13 @@ class Admin {
     }
 
     public function cartCheckout(){
-        $pembayaran = isset($_POST['pembayaran']) ? $_POST['pembayaran'] : 0;
+        $this->cart['pembayaran'] = isset($_POST['pembayaran']) ? $_POST['pembayaran'] : 0;
         
-        if(!$pembayaran) {
+        if(!$this->cart['pembayaran']) {
             $_SESSION['flash_message_error'] = 'Tidak bisa checkout: Harap Isi Nominal Pembayaran';
             header('Location: /admin/product/cart');
             return;
-        } else if($pembayaran < $this->cart['total_harga']) {
+        } else if($this->cart['pembayaran'] < $this->cart['total_harga']) {
             $_SESSION['flash_message_error'] = 'Tidak bisa checkout: Nominal Pembayaran Kurang';
             header('Location: /admin/product/cart');
             return;
@@ -495,22 +495,58 @@ class Admin {
             return;
         }
 
-        $sisaPembayaran = $pembayaran - $this->cart['total_harga'];
+        $this->cart['sisa_pembayaran'] = $this->cart['pembayaran'] - $this->cart['total_harga'];
+
         $updateCart = $this->model->updateCart($this->cart['id'], [
-            'pembayaran' => $pembayaran, 
-            'sisa_pembayaran' => $sisaPembayaran,
+            'pembayaran' => $this->cart['pembayaran'], 
+            'sisa_pembayaran' => $this->cart['sisa_pembayaran'],
             'waktu_selesai' => date('Y-m-d H:i:s'), 
             'status' => 'Done' 
         ]);
 
         if($updateCart) {
             $_SESSION['flash_message_success'] = 'Berhasil checkout';
-            require './views/admin_page/products/printout_bill.php';
+            $this->printBill();
         } else {
             $_SESSION['flash_message_error'] = 'Gagal checkout';
             header('Location: /admin/product/cart');
             return;
         }
+    }
+
+    // Printout Bill
+    public function printBill() {
+        ob_start();
+        include './views/admin_page/products/printout_bill.php';
+        $html = ob_get_clean();
+
+        $contentHeight = $this->getBillContentHeight($html);
+        
+        $dompdf = new Dompdf();
+        $dompdf->setPaper([0, 0, 141.732, 141.732 * $contentHeight], 'portrait');
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        if(!file_exists('./assets/bill/')) {
+            mkdir('./assets/bill/', 0777, true);
+        }
+
+        $billName = "bill_.{$this->cart['id']}.pdf";
+        // Save PDF file
+        file_put_contents("./assets/bill/$billName", $dompdf->output());
+        
+        // Output the generated PDF to Browser
+        $dompdf->stream($billName, ['Attachment' => 0]);
+    }
+
+    public function getBillContentHeight($html) {
+        $dompdf = new Dompdf();
+        $dompdf->setPaper([0, 0, 141.732, 141.732], 'portrait');
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $pageCount = $dompdf->getCanvas()->get_page_number();
+        unset($dompdf);
+        return $pageCount;
     }
 
     // Sales
