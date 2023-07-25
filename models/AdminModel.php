@@ -92,6 +92,9 @@ class AdminModel {
     }
 
     function getProductByName($nama) {
+        if($this->userCondition) {
+            $this->db->where("company = '{$this->userCondition['company']}'");
+        }
         return $this->db->from('tb_product')->where("nama = '$nama'")->getOne();
     }
 

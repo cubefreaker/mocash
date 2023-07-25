@@ -56,8 +56,9 @@
                   </div>
                   <div class="form-group">
                     <label for="role">Role</label>
-                    <select class="form-control" name="role" <?= $this->user['role'] == 'Owner' ? 'disabled' : 'required' ?> >
-                      <option value="Super Admin" selected>Super Admin</option>
+                    <input type="hidden" name="role">
+                    <select id="selectRole" class="form-control" <?= $this->user['role'] == 'Owner' ? 'disabled' : 'required' ?> >
+                      <option value="Super Admin">Super Admin</option>
                       <option value="Admin">Admin</option>
                       <option value="User">User</option>
                     </select>
@@ -93,6 +94,14 @@
 <!-- Page specific script -->
 <script>
   $(function () {
+    $('#selectRole').on('change', function() {
+      $('input[name="role"]').val($(this).val());
+    });
+
+    if('<?= $this->user['role'] ?>' == 'Owner') {
+      $('#selectRole').val('Super Admin').trigger('change');
+    }
+
     $('#formAddUser').on('submit', function(event) {
       let password = $('#password').val();
       let rePassword = $('#re-password').val();
