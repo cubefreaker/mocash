@@ -71,7 +71,8 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="company">Company</label>
-                        <select class="form-control" name="company" value="<?= $this->user['role'] != 'Owner' ? $this->user['company'] : '' ?>" <?= $this->user['role'] != 'Owner' ? 'disabled' : '' ?> required>
+                        <input type="hidden" name="company">
+                        <select id="selectCompany" class="form-control" value="<?= $this->user['role'] != 'Owner' ? $this->user['company'] : '' ?>" <?= $this->user['role'] != 'Owner' ? 'readonly' : '' ?> required>
                             <?php foreach ($listCompany as $company) { ?>
                                 <option value="<?= $company['company'] ?>"><?= $company['company'] ?></option>
                             <?php } ?>
@@ -111,6 +112,14 @@
 <script>
   $(function () {
     $(document).ready(() => {
+      $('#selectCompany').on('change', function() {
+        $('input[name="company"]').val($(this).val());
+      });
+
+      if('<?= $this->user['role'] ?>' != 'Owner') {
+        $('#selectCompany').val("<?= $this->user['company'] ?>").trigger('change');
+      }
+
       $("#imageUpload").change(function () {
         const file = this.files[0];
         if (file) {

@@ -39,7 +39,7 @@
                   Stok: <?= $p['stok'] ?>
                 </div>
                 <div class="col-12 text-center my-2">
-                  <button onclick="window.location.href = '/admin/product/cart/add?id=<?= $p['id'] ?>&cart_id=<?= isset($this->cart['id']) ? $this->cart['id'] : '' ?>&price=<?= $p['harga'] ?>&kategori=<?= $kategori ?>'" class="btn btn-sm btn-primary" <?= $p['stok'] <= 0 ? 'disabled' : '' ?> >Pilih</button>
+                  <button onclick="window.location.href = '/admin/product/cart/add?id=<?= $p['id'] ?>&cart_id=<?= isset($this->cart['id']) ? $this->cart['id'] : '' ?>&price=<?= $p['harga'] ?>&kategori=<?= $kategori ?>'" class="btn btn-sm btn-primary" <?= $p['stok'] <= 0 ? 'readonly' : '' ?> >Pilih</button>
                 </div>
               </div>
             </div>

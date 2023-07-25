@@ -46,13 +46,13 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="nama">Nama Produk</label>
-                        <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama" value="<?= $product['nama'] ?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'disabled' : '' ?> required>
+                        <input type="text" class="form-control" name="nama" id="nama" placeholder="Enter nama" value="<?= $product['nama'] ?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'readonly' : '' ?> required>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="kategori">Kategori</label>
-                        <select class="form-control" name="kategori" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'disabled' : '' ?>  required>
+                        <select class="form-control" name="kategori" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'readonly' : '' ?>  required>
                             <option value="Makanan" <?=$product['kategori'] == 'Makanan' ? 'selected' : ''?> >Makanan</option>
                             <option value="Minuman" <?=$product['kategori'] == 'Minuman' ? 'selected' : ''?> >Minuman</option>
                             <option value="Cemilan" <?=$product['kategori'] == 'Cemilan' ? 'selected' : ''?> >Cemilan</option>
@@ -64,7 +64,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="harga">Harga</label>
-                        <input type="number" step="0.1" class="form-control" name="harga" id="harga" placeholder="Enter harga" value="<?= $product['harga'] ?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'disabled' : '' ?> required>
+                        <input type="number" step="0.1" class="form-control" name="harga" id="harga" placeholder="Enter harga" value="<?= $product['harga'] ?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin', 'Admin']) ? 'readonly' : '' ?> required>
                       </div>
                     </div>
                     <div class="col-sm-6">
@@ -76,7 +76,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label for="company">Company</label>
-                        <select class="form-control" name="company" <?= !in_array($this->user['role'], ['Owner']) ? 'disabled' : '' ?> required>
+                        <select class="form-control" name="company" <?= !in_array($this->user['role'], ['Owner']) ? 'readonly' : '' ?> required>
                             <?php foreach ($listCompany as $company) { ?>
                                 <option value="<?= $company['company'] ?>" <?=$product['company'] == $company['company'] ? 'selected' : ''?> ><?= $company['company'] ?></option>
                             <?php } ?>

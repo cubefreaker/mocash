@@ -33,7 +33,7 @@
                   </div>
                   <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<?=$user['email']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'disabled' : '' ?> required>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<?=$user['email']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'readonly' : '' ?> required>
                   </div>
                   <div class="form-group">
                     <label for="password">Password</label>
@@ -45,11 +45,11 @@
                   </div>
                   <div class="form-group">
                     <label for="cabang">Cabang</label>
-                    <input type="text" class="form-control" name="cabang" id="cabang" placeholder="Enter cabang" value="<?=$user['cabang']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" name="cabang" id="cabang" placeholder="Enter cabang" value="<?=$user['cabang']?>" <?= !in_array($this->user['role'], ['Owner', 'Super Admin']) ? 'readonly' : '' ?> required>
                   </div>
                   <div class="form-group">
                     <label for="cabang">Company</label>
-                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" value="<?=$user['company']?>" <?= !in_array($this->user['role'], ['Owner']) ? 'disabled' : '' ?> required>
+                    <input type="text" class="form-control" name="company" id="company" placeholder="Enter company" value="<?=$user['company']?>" <?= !in_array($this->user['role'], ['Owner']) ? 'readonly' : '' ?> required>
                   </div>
                   <div class="form-group">
                     <label for="alamat">Alamat</label>
@@ -57,7 +57,7 @@
                   </div>
                   <div class="form-group">
                     <label for="role">Role</label>
-                    <select class="form-control" name="role" value="<?=$user['role']?>" <?= !in_array($this->user['role'], ['Super Admin']) ? 'disabled' : '' ?> <?= $this->user['role'] != 'Owner' ? 'required' : '' ?> >
+                    <select class="form-control" name="role" value="<?=$user['role']?>" <?= !in_array($this->user['role'], ['Super Admin']) ? 'readonly' : '' ?> <?= $this->user['role'] != 'Owner' ? 'required' : '' ?> >
                       <option value="Super Admin" <?=$user['role'] == 'Super Admin' ? 'selected' : ''?> >Super Admin</option>
                       <option value="Admin" <?=$user['role'] == 'Admin' ? 'selected' : ''?> >Admin</option>
                       <option value="User" <?=$user['role'] == 'User' ? 'selected' : ''?> >User</option>

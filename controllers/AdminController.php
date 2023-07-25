@@ -92,6 +92,12 @@ class Admin {
         $alamat = isset($_POST['alamat']) ? $_POST['alamat'] : '';
         $role = isset($_POST['role']) ? $_POST['role'] : '';
 
+        
+        echo "<pre>";
+        print_r ($_POST);
+        echo "</pre>";die;
+        
+
         if(!$fullname || !$email || !$password || !$role) {
             $_SESSION['flash_message_error'] = 'Tidak bisa tambah user: Data tidak lengkap';
             header('Location: /admin/user/add');
